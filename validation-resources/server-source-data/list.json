@@ -1,0 +1,14 @@
+[
+	{
+		"client_uid": "2e0a9b33-5168-4b9f-91c6-2f45d6d30d54",
+		"requester_uid": "3618e1b0-1b8f-4636-ab8b-0500f26307a3",
+		"size": 10,
+		"floating_point": 56.9
+	},
+	{
+		"client_uid": "c60aa554-ccd7-4821-8a7c-fef19494d8c9",
+		"requester_uid": "a289d184-7384-4f9a-96bc-aa951f487349",
+		"size": 14,
+		"floating_point": 50.8
+	}
+]
