@@ -16,10 +16,11 @@ libraryDependencies ++= Seq(
   "io.trino" % "trino-plugin-toolkit" % trinoVersion,
   "com.google.guava" % "guava" % "31.1-jre",
   "org.scalaj" %% "scalaj-http" % "2.4.2",
-//  "com.fasterxml.jackson.core" % "jackson-databind" % "2.13.4"  % "provided"
 )
 
 assembly / assemblyJarName := "http-requester.jar"
+assembly / assemblyOutputPath := file(s"target/http-requester/${(assembly/assemblyJarName).value}")
+
 
 assembly / assemblyMergeStrategy := {
   case PathList("io", "trino", "spi", "license", "LicenseManager.class") => MergeStrategy.discard
