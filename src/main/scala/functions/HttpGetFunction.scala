@@ -19,15 +19,13 @@ object HttpGetFunction {
   @TypeParameter(value = "VH")
   @SqlType(StandardTypes.JSON)
   def httpGetFromArrayMap(
-                           @TypeParameter("KP") paramKeyType: Type,
-                           @TypeParameter("KH") headerKeyType: Type,
                            @SqlType(StandardTypes.VARCHAR) httpAddress: Slice,
                            @SqlType("map(KP,VP)") parameters: Block,
-                           @SqlNullable @SqlType("map(KH,VH)") headers: Block,
+                           @SqlNullable @SqlType("map(KH,VH)") headers: Block = null,
   ): Slice = {
 
-    val stringParams = castSliceMap(paramKeyType, parameters)
-    val stringHeaders = castSliceMap(headerKeyType, headers)
+    val stringParams = castSliceMap(parameters)
+    val stringHeaders = castSliceMap(headers)
     val request = Http(httpAddress.toStringUtf8).headers(stringHeaders).params(stringParams)
     val stringResponse = request.asString.body
     val sliceResponse = Slices.utf8Slice(stringResponse)
@@ -37,15 +35,15 @@ object HttpGetFunction {
     JsonTypeUtil.jsonParse(sliceResponse)
   }
 
-  private def castSliceMap(keyType: Type, block: Block): Map[String, String] = {
+  private def castSliceMap(block: Block): Map[String, String] = {
+    if (block == null){
+      return Map.empty
+    }
     val mapBlock = block.asInstanceOf[SingleMapBlock]
 
     (0 until block.getPositionCount by 2).map((index) => {
       val keyIndex = index
       val valueIndex = index+1
-
-//      val key = mapBlock.getObject(keyIndex, keyType.getJavaType)
-//      val value = mapBlock.getObject(valueIndex, keyType.getJavaType)
 
       val keyLenght = mapBlock.getSliceLength(keyIndex)
       val key = mapBlock.getSlice(keyIndex, 0, keyLenght).toStringUtf8

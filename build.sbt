@@ -1,7 +1,8 @@
 ThisBuild / scalaVersion := "2.13.8"
 
+val DEFAULT_TRINO_VERSION = "395"
 val projectName = "trino-plugins"
-val trinoVersion = "395"
+val trinoVersion = scala.sys.env.getOrElse("TRINO_VERSION", DEFAULT_TRINO_VERSION)
 ThisBuild / version := trinoVersion
 
 lazy val root = (project in file("."))

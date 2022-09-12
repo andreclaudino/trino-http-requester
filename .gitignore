@@ -68,3 +68,7 @@ project/**/metals.sbt
 
 .bsp
 .idea/
+
+target/http-requester/http-requester.jar
+docker/http-requester
+docker/image
